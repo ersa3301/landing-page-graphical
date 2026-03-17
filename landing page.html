@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graphical — #WearYourIdea</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #253349;
+      --mint: #45edc0;
+      --mint-dim: #2ec9a0;
+      --gold: #c8993a;
+      --gold-light: #e8c060;
+      --white: #f5f5f0;
+      --off: #1a2535;
+      --dark: #111820;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--mint);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--mint);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.35s ease, opacity 0.2s;
+      opacity: 0.5;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 4rem;
+      background: linear-gradient(to bottom, rgba(17,24,32,0.95) 0%, transparent 100%);
+      backdrop-filter: blur(0px);
+      transition: backdrop-filter 0.4s, background 0.4s;
+    }
+    nav.scrolled {
+      backdrop-filter: blur(20px);
+      background: rgba(17,24,32,0.85);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.12em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--mint); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: rgba(245,245,240,0.65);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--mint); }
+    .nav-cta {
+      background: var(--mint);
+      color: var(--dark) !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 2px;
+      font-weight: 600 !important;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-left {
+      background: var(--navy);
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 8rem 4rem 6rem 6rem;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-right {
+      background: var(--mint);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-right::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 70%, rgba(200,153,58,0.25) 0%, transparent 60%);
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      border: 1px solid rgba(69,237,192,0.4);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 2.5rem;
+      width: fit-content;
+      animation: fadeSlideUp 0.8s ease both;
+    }
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--mint);
+      border-radius: 50%;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 5vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: 1.8rem;
+      animation: fadeSlideUp 0.9s ease 0.1s both;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--mint);
+    }
+    .hero-sub {
+      font-size: 1rem;
+      color: rgba(245,245,240,0.6);
+      line-height: 1.75;
+      max-width: 380px;
+      margin-bottom: 3rem;
+      font-weight: 300;
+      animation: fadeSlideUp 0.9s ease 0.2s both;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; align-items: center;
+      animation: fadeSlideUp 0.9s ease 0.3s both;
+    }
+    .btn-primary {
+      background: var(--mint);
+      color: var(--dark);
+      padding: 0.9rem 2.2rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--mint-dim); transform: translateY(-2px); }
+    .btn-ghost {
+      color: rgba(245,245,240,0.7);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: color 0.25s;
+    }
+    .btn-ghost:hover { color: var(--white); }
+    .btn-ghost::after { content: '→'; font-size: 1rem; }
+
+    /* hero right big type */
+    .hero-big-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 10vw, 11rem);
+      color: var(--dark);
+      line-height: 0.9;
+      text-align: center;
+      letter-spacing: -0.02em;
+      opacity: 0.12;
+      user-select: none;
+      position: absolute;
+    }
+    .hero-center-icon {
+      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+      position: relative; z-index: 2;
+    }
+    .icon-g {
+      width: 100px; height: 100px;
+      background: var(--dark);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      color: var(--mint);
+      box-shadow: 0 0 60px rgba(17,24,32,0.4);
+    }
+    .hero-hashtag {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--dark);
+      letter-spacing: 0.1em;
+    }
+
+    /* scroll indicator */
+    .scroll-line {
+      position: absolute; bottom: 3rem; left: 6rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+      animation: fadeSlideUp 1s ease 0.6s both;
+    }
+    .scroll-line span {
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(245,245,240,0.4); writing-mode: vertical-rl;
+    }
+    .scroll-line::after {
+      content: ''; width: 1px; height: 60px;
+      background: linear-gradient(to bottom, rgba(69,237,192,0.6), transparent);
+      animation: scrollPulse 2s ease infinite;
+    }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      background: var(--mint);
+      padding: 1rem 0;
+      overflow: hidden;
+      display: flex;
+    }
+    .marquee-track {
+      display: flex; gap: 0;
+      animation: marquee 18s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      color: var(--dark);
+      padding: 0 2rem;
+      display: flex; align-items: center; gap: 2rem;
+    }
+    .marquee-item::after {
+      content: '✦';
+      font-size: 0.7rem;
+      color: rgba(17,24,32,0.4);
+    }
+
+    /* SECTIONS */
+    section { padding: 7rem 6rem; }
+
+    .label {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--mint); }
+
+    /* ABOUT */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .about-visual {
+      position: relative;
+      height: 500px;
+    }
+    .about-card {
+      position: absolute;
+      background: var(--navy);
+      border: 1px solid rgba(69,237,192,0.15);
+      padding: 2rem;
+    }
+    .about-card.big {
+      width: 75%; height: 75%;
+      top: 0; right: 0;
+      display: flex; align-items: flex-end;
+    }
+    .about-card.big-inner {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: rgba(245,245,240,0.7);
+      line-height: 1.6;
+    }
+    .about-card.small {
+      width: 55%; bottom: 0; left: 0;
+      background: var(--mint);
+      padding: 1.8rem;
+    }
+    .about-card.small .num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      color: var(--dark);
+      line-height: 1;
+    }
+    .about-card.small .num-label {
+      font-size: 0.78rem;
+      color: rgba(17,24,32,0.7);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .about-text p {
+      color: rgba(245,245,240,0.6);
+      line-height: 1.85;
+      font-weight: 300;
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+    }
+    .about-text p strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    /* SERVICES */
+    .services-section { background: var(--off); }
+    .services-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 4rem;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5px;
+    }
+    .service-card {
+      background: var(--dark);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.35s;
+      border-top: 2px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .service-card:hover {
+      background: rgba(37,51,73,0.6);
+      border-color: var(--mint);
+    }
+    .service-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      color: rgba(69,237,192,0.12);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      transition: color 0.3s;
+    }
+    .service-card:hover .service-num { color: rgba(69,237,192,0.25); }
+    .service-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .service-desc {
+      font-size: 0.88rem;
+      color: rgba(245,245,240,0.5);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* WHY US */
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 4rem;
+    }
+    .why-item {
+      padding: 3rem;
+      background: var(--navy);
+      border-left: 3px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+      cursor: default;
+    }
+    .why-item:hover {
+      border-left-color: var(--mint);
+      background: rgba(37,51,73,0.8);
+    }
+    .why-item:nth-child(2), .why-item:nth-child(4) {
+      background: rgba(37,51,73,0.5);
+    }
+    .why-icon {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+    }
+    .why-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+    .why-desc {
+      font-size: 0.9rem;
+      color: rgba(245,245,240,0.55);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    /* BIG QUOTE */
+    .quote-section {
+      background: var(--navy);
+      text-align: center;
+      padding: 8rem 8rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-section::before {
+      content: '❝';
+      font-family: 'Playfair Display', serif;
+      font-size: 20rem;
+      color: rgba(69,237,192,0.05);
+      position: absolute;
+      top: -4rem; left: 50%;
+      transform: translateX(-50%);
+      line-height: 1;
+      user-select: none;
+    }
+    .quote-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3.5rem);
+      font-style: italic;
+      line-height: 1.35;
+      max-width: 820px;
+      margin: 0 auto 2rem;
+      position: relative;
+    }
+    .quote-text em { color: var(--mint); font-style: normal; }
+    .quote-attr {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,245,240,0.4);
+    }
+
+    /* PROCESS */
+    .process-section { background: var(--dark); }
+    .process-steps {
+      display: flex;
+      gap: 0;
+      margin-top: 4rem;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 2rem; left: 2rem; right: 2rem;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(69,237,192,0.3), transparent);
+    }
+    .step {
+      flex: 1;
+      padding: 3rem 2rem 2rem;
+      position: relative;
+    }
+    .step-dot {
+      width: 16px; height: 16px;
+      background: var(--mint);
+      border-radius: 50%;
+      margin-bottom: 2rem;
+      position: relative;
+      box-shadow: 0 0 20px rgba(69,237,192,0.5);
+    }
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      color: var(--mint);
+      letter-spacing: 0.2em;
+      margin-bottom: 0.8rem;
+    }
+    .step-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+    .step-desc {
+      font-size: 0.87rem;
+      color: rgba(245,245,240,0.5);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* PRODUCTS */
+    .products-section { background: var(--off); }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 4rem;
+    }
+    .product-card {
+      background: var(--dark);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      min-height: 240px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      transition: transform 0.3s;
+    }
+    .product-card:hover { transform: translateY(-4px); }
+    .product-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(37,51,73,0.5) 0%, transparent 60%);
+    }
+    .product-accent {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      width: 50px; height: 50px;
+      border: 1.5px solid rgba(69,237,192,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    .product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+    .product-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mint);
+      position: relative;
+    }
+
+    /* STATS */
+    .stats-section {
+      background: var(--mint);
+      padding: 5rem 6rem;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      color: var(--dark);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(17,24,32,0.6);
+      font-weight: 600;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: var(--dark);
+      text-align: center;
+      padding: 8rem 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center bottom, rgba(37,51,73,0.6) 0%, transparent 70%);
+    }
+    .cta-section .section-title {
+      font-size: clamp(3rem, 5vw, 5rem);
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      position: relative;
+    }
+    .cta-section p {
+      color: rgba(245,245,240,0.55);
+      font-size: 1.05rem;
+      max-width: 500px;
+      margin: 0 auto 3rem;
+      line-height: 1.75;
+      font-weight: 300;
+      position: relative;
+    }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; position: relative; }
+    .btn-outline {
+      border: 1.5px solid rgba(245,245,240,0.3);
+      color: rgba(245,245,240,0.7);
+      padding: 0.9rem 2.2rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .btn-outline:hover { border-color: var(--mint); color: var(--mint); }
+
+    /* FOOTER */
+    footer {
+      background: var(--off);
+      padding: 4rem 6rem 2rem;
+      border-top: 1px solid rgba(69,237,192,0.1);
+    }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(245,245,240,0.08);
+      margin-bottom: 2rem;
+    }
+    .footer-brand .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.12em;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .footer-brand .logo span { color: var(--mint); }
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: rgba(245,245,240,0.4);
+      font-weight: 300;
+      line-height: 1.6;
+      max-width: 280px;
+    }
+    .footer-links h4 {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 1.2rem;
+    }
+    .footer-links ul { list-style: none; }
+    .footer-links li { margin-bottom: 0.6rem; }
+    .footer-links a {
+      text-decoration: none;
+      color: rgba(245,245,240,0.5);
+      font-size: 0.88rem;
+      transition: color 0.25s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p {
+      font-size: 0.78rem;
+      color: rgba(245,245,240,0.3);
+    }
+    .footer-bottom .ig {
+      font-size: 0.78rem;
+      color: rgba(245,245,240,0.4);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: color 0.25s;
+    }
+    .footer-bottom .ig:hover { color: var(--mint); }
+    .ig-icon {
+      width: 18px; height: 18px;
+      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    /* FLOATING NAV DOT */
+    .nav-dots {
+      position: fixed;
+      right: 2rem; top: 50%;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 0.8rem;
+      z-index: 50;
+    }
+    .nav-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(245,245,240,0.2);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .nav-dot.active {
+      background: var(--mint);
+      transform: scale(1.5);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 2rem; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { padding: 8rem 2rem 5rem; }
+      .about { grid-template-columns: 1fr; }
+      .about-visual { height: 300px; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .products-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 3rem 2rem 2rem; }
+      .footer-top { flex-direction: column; gap: 2rem; }
+      .quote-section { padding: 6rem 2rem; }
+      .process-steps { flex-direction: column; }
+      .process-steps::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a class="nav-logo" href="#">G<span>.</span>raphical</a>
+    <ul class="nav-links">
+      <li><a href="#about">Tentang</a></li>
+      <li><a href="#services">Layanan</a></li>
+      <li><a href="#why">Keunggulan</a></li>
+      <li><a href="#process">Proses</a></li>
+      <li><a href="#contact" class="nav-cta">Order Sekarang</a></li>
+    </ul>
+  </nav>
+
+  <!-- NAV DOTS -->
+  <div class="nav-dots" id="navDots">
+    <div class="nav-dot active" data-section="hero"></div>
+    <div class="nav-dot" data-section="about"></div>
+    <div class="nav-dot" data-section="services"></div>
+    <div class="nav-dot" data-section="why"></div>
+    <div class="nav-dot" data-section="process"></div>
+    <div class="nav-dot" data-section="contact"></div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-left">
+      <div class="hero-tag">#WearYourIdea</div>
+      <h1 class="hero-title">
+        Presisi di<br/>
+        Setiap<br/>
+        <em>Helai.</em>
+      </h1>
+      <p class="hero-sub">
+        Custom apparel brand yang merancang setiap produk dengan <strong>desain yang bersih</strong>, material berkualitas, dan produksi yang penuh perhatian — dari satu piece hingga ribuan.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Mulai Order</a>
+        <a href="#services" class="btn-ghost">Lihat Layanan</a>
+      </div>
+      <div class="scroll-line">
+        <span></span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-big-text">G</div>
+      <div class="hero-center-icon">
+        <div class="icon-g">G</div>
+        <div class="hero-hashtag">#WEARYOURIDEA</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="marqueeTrack">
+      <div class="marquee-item">Clean Design</div>
+      <div class="marquee-item">Quality Materials</div>
+      <div class="marquee-item">Thoughtful Production</div>
+      <div class="marquee-item">Custom Apparel</div>
+      <div class="marquee-item">Personal Pieces</div>
+      <div class="marquee-item">Team Production</div>
+      <div class="marquee-item">Precision In Every Viber</div>
+      <div class="marquee-item">Clean Design</div>
+      <div class="marquee-item">Quality Materials</div>
+      <div class="marquee-item">Thoughtful Production</div>
+      <div class="marquee-item">Custom Apparel</div>
+      <div class="marquee-item">Personal Pieces</div>
+      <div class="marquee-item">Team Production</div>
+      <div class="marquee-item">Precision In Every Viber</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about" style="background: var(--dark);">
+    <div class="about">
+      <div class="about-visual">
+        <div class="about-card big">
+          <div class="about-card big-inner">
+            "Bukan sekadar pakaian — kami membuat media ekspresi yang dipakai setiap hari."
+          </div>
+        </div>
+        <div class="about-card small">
+          <div class="num">100<span style="font-size:2rem">%</span></div>
+          <div class="num-label">Design-Oriented</div>
+        </div>
+      </div>
+      <div class="about-text reveal">
+        <div class="label">Tentang Graphical</div>
+        <h2 class="section-title">Wear Your <em>Idea</em></h2>
+        <p>
+          Graphical adalah custom apparel brand yang lahir dari kepercayaan bahwa setiap produk harus membawa makna. Kami memperhatikan <strong>design, fit, dan overall look</strong> supaya setiap piece terlihat clean, modern, dan premium.
+        </p>
+        <p>
+          Dari personal wear untuk individu, jersey untuk komunitas, hingga seragam tim — kami hadir untuk mewujudkan ide kamu menjadi produk nyata yang layak dipakai.
+        </p>
+        <p>
+          Temukan kami di Instagram <strong>@graphical.official</strong> dan jadikan ide kamu kenyataan.
+        </p>
+        <a href="#contact" class="btn-primary" style="margin-top:0.5rem">Hubungi Kami</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services-section" id="services">
+    <div class="services-header reveal">
+      <div>
+        <div class="label">Apa yang Kami Buat</div>
+        <h2 class="section-title">Layanan <em>Kami</em></h2>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <div class="service-name">Ready-to-Wear</div>
+        <div class="service-desc">Koleksi produk siap pakai dengan desain clean dan modern. Langsung pilih, langsung pakai.</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">02</div>
+        <div class="service-name">Custom Production</div>
+        <div class="service-desc">Bawa desain kamu sendiri atau diskusikan bersama kami. Kami wujudkan konsep menjadi produk nyata.</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">03</div>
+        <div class="service-name">Small Orders</div>
+        <div class="service-desc">Tidak perlu order dalam jumlah besar. Kami melayani pesanan personal dalam jumlah kecil dengan kualitas yang sama.</div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">04</div>
+        <div class="service-name">Large Production</div>
+        <div class="service-desc">Tim, komunitas, event, atau brand? Kami siap handle produksi besar dengan konsistensi kualitas penuh.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section id="why" style="background: var(--dark);">
+    <div class="reveal">
+      <div class="label">Keunggulan Kami</div>
+      <h2 class="section-title">What Make <em>Us</em> Different</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-item reveal">
+        <div class="why-icon">✦</div>
+        <div class="why-title">Design-Oriented Production</div>
+        <div class="why-desc">Bukan sekadar produksi pakaian. Kami memperhatikan design, fit, dan overall look supaya produk tetap clean dan modern di setiap detail.</div>
+      </div>
+      <div class="why-item reveal">
+        <div class="why-icon">◈</div>
+        <div class="why-title">Flexible Orders</div>
+        <div class="why-desc">Order sesuai kebutuhan. From personal pieces to large productions — tidak ada minimum order yang menghalangi ide kamu.</div>
+      </div>
+      <div class="why-item reveal">
+        <div class="why-icon">◇</div>
+        <div class="why-title">Creative Freedom</div>
+        <div class="why-desc">Kamu bebas membawa ide desain sendiri atau berdiskusi dengan kami untuk mengembangkan konsep produk yang unik dan berkarakter.</div>
+      </div>
+      <div class="why-item reveal">
+        <div class="why-icon">⬡</div>
+        <div class="why-title">Quality & Detail Focus</div>
+        <div class="why-desc">Kami fokus pada material selection, neat stitching, dan clean finishing agar setiap produk terlihat lebih premium dan tahan lama.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <div class="quote-section">
+    <div class="quote-text reveal">
+      "Simple. Modern. <em>Made to represent your idea.</em>"
+    </div>
+    <div class="quote-attr reveal">— Graphical · Precision in Every Viber</div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section class="products-section">
+    <div class="reveal">
+      <div class="label">Produk Kami</div>
+      <h2 class="section-title">Apparel <em>Collection</em></h2>
+    </div>
+    <div class="products-grid">
+      <div class="product-card reveal">
+        <div class="product-accent">👕</div>
+        <div class="product-name">T-Shirt</div>
+        <div class="product-tag">Custom · Ready to Wear</div>
+      </div>
+      <div class="product-card reveal" style="background: var(--navy);">
+        <div class="product-accent">🧥</div>
+        <div class="product-name">Jacket</div>
+        <div class="product-tag">Custom · Premium</div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-accent">👔</div>
+        <div class="product-name">Kemeja</div>
+        <div class="product-tag">Custom · Formal</div>
+      </div>
+      <div class="product-card reveal" style="background: var(--navy);">
+        <div class="product-accent">⚽</div>
+        <div class="product-name">Jersey</div>
+        <div class="product-tag">Tim · Komunitas</div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-accent">🧢</div>
+        <div class="product-name">Accessories</div>
+        <div class="product-tag">Cap · Totebag · More</div>
+      </div>
+      <div class="product-card reveal" style="background: rgba(69,237,192,0.12); border: 1px solid rgba(69,237,192,0.2);">
+        <div class="product-accent" style="border-color: rgba(69,237,192,0.5);">✦</div>
+        <div class="product-name" style="color: var(--mint);">Custom Order</div>
+        <div class="product-tag">Konsultasi Gratis</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Design Oriented</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-num">MOQ1</div>
+        <div class="stat-label">Minimum Order</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Creative Options</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Konsultasi</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+  <section class="process-section" id="process">
+    <div class="reveal">
+      <div class="label">Cara Kerja Kami</div>
+      <h2 class="section-title">Proses <em>Sederhana</em></h2>
+    </div>
+    <div class="process-steps">
+      <div class="step reveal">
+        <div class="step-dot"></div>
+        <div class="step-num">Step 01</div>
+        <div class="step-title">Konsultasi</div>
+        <div class="step-desc">Ceritakan ide atau kebutuhan kamu. Hubungi kami via DM Instagram atau contact yang tersedia.</div>
+      </div>
+      <div class="step reveal">
+        <div class="step-dot" style="background: rgba(69,237,192,0.6); box-shadow: none;"></div>
+        <div class="step-num">Step 02</div>
+        <div class="step-title">Desain</div>
+        <div class="step-desc">Kami bantu kembangkan konsep desain atau kamu bisa membawa artwork sendiri untuk diproduksi.</div>
+      </div>
+      <div class="step reveal">
+        <div class="step-dot" style="background: rgba(69,237,192,0.6); box-shadow: none;"></div>
+        <div class="step-num">Step 03</div>
+        <div class="step-title">Konfirmasi</div>
+        <div class="step-desc">Review desain final, konfirmasi ukuran dan quantity, lalu setujui mockup sebelum produksi dimulai.</div>
+      </div>
+      <div class="step reveal">
+        <div class="step-dot"></div>
+        <div class="step-num">Step 04</div>
+        <div class="step-title">Produksi & Kirim</div>
+        <div class="step-desc">Kami produksi dengan presisi penuh dan kirimkan produk siap pakai langsung ke tanganmu.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <div class="label reveal" style="justify-content:center; display:flex;">Mulai Sekarang</div>
+    <h2 class="section-title reveal">
+      Wujudkan<br/><em>Ide Kamu.</em>
+    </h2>
+    <p class="reveal">
+      Dari satu piece hingga produksi besar — kami siap mewujudkan setiap ide menjadi produk nyata yang bisa kamu banggakan.
+    </p>
+    <div class="cta-actions reveal">
+      <a href="https://instagram.com/graphical.official" target="_blank" class="btn-primary">DM di Instagram</a>
+      <a href="#services" class="btn-outline">Lihat Layanan</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">G<span style="color:var(--mint)">.</span>raphical</div>
+        <p>Custom apparel brand yang memperhatikan setiap detail. Precision in Every Viber.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigasi</h4>
+        <ul>
+          <li><a href="#about">Tentang Kami</a></li>
+          <li><a href="#services">Layanan</a></li>
+          <li><a href="#why">Keunggulan</a></li>
+          <li><a href="#process">Proses</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Produk</h4>
+        <ul>
+          <li><a href="#">T-Shirt Custom</a></li>
+          <li><a href="#">Jacket</a></li>
+          <li><a href="#">Jersey Tim</a></li>
+          <li><a href="#">Kemeja</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Kontak</h4>
+        <ul>
+          <li><a href="https://instagram.com/graphical.official" target="_blank">@graphical.official</a></li>
+          <li><a href="#">#WearYourIdea</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Graphical. All rights reserved.</p>
+      <a href="https://instagram.com/graphical.official" class="ig" target="_blank">
+        <span class="ig-icon"></span>
+        @graphical.official
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+    });
+    function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) *.12;
+      ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+    document.querySelectorAll('a, button, .service-card, .why-item').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.style.transform += ' scale(2)'; ring.style.opacity = '1'; });
+      el.addEventListener('mouseleave', () => { ring.style.opacity = '0.5'; });
+    });
+
+    // Scroll Nav
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 80);
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => obs.observe(r));
+
+    // Nav dots
+    const sections = ['hero','about','services','why','process','contact'];
+    const dots = document.querySelectorAll('.nav-dot');
+    const sectionObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const idx = sections.indexOf(e.target.id);
+          dots.forEach(d => d.classList.remove('active'));
+          if (idx >= 0) dots[idx].classList.add('active');
+        }
+      });
+    }, { threshold: 0.4 });
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) sectionObs.observe(el);
+    });
+    dots.forEach((d, i) => {
+      d.addEventListener('click', () => {
+        document.getElementById(sections[i])?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Counter animation
+    function animateCounter(el, target, suffix='') {
+      let current = 0;
+      const inc = target / 60;
+      const timer = setInterval(() => {
+        current += inc;
+        if (current >= target) { current = target; clearInterval(timer); }
+        el.textContent = Math.floor(current) + suffix;
+      }, 25);
+    }
+  </script>
+</body>
+</html>
